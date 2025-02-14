@@ -1,12 +1,12 @@
 repositories:
   - name: bitnami
-    url: https://github.com/bitnami/charts
+    url: https://charts.bitnami.com/bitnami
 
 releases:
 - name: mongodb
   namespace: gitlab-managed-apps
   chart: bitnami/mongodb
-  version: 8.0.4
+  version: 16.4.0
   installed: true
   values:
     - values.yaml
