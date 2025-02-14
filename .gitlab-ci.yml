@@ -2,7 +2,7 @@
 ## Replace <FULL_NAME_OF_CLUSTER_MANAGEMENT_PROJECT>:<NAME_YOU_GAVE_YOUR_AGENT>
 ## with the actual project and agent name.
 variables:
-  KUBE_CONTEXT: "gitlab-agent-manage-local-agent"
+  KUBE_CONTEXT: "git.chalmers.se:courses/dat490/students/2025/dat490-2025-9/scalyshop-cluster-management:manage-local-agent"
 
 .base:
   image: "registry.gitlab.com/gitlab-org/cluster-integration/cluster-applications:v2.1.0"
