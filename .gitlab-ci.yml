@@ -26,7 +26,7 @@ diff:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
-    - if: $CI_COMMIT_BRANCH == manage-local
+    - if: $CI_COMMIT_BRANCH == "manage-local"
 
 sync:
   extends: .base
@@ -39,7 +39,7 @@ sync:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
-    - if: $CI_COMMIT_BRANCH == manage-local
+    - if: $CI_COMMIT_BRANCH == "manage-local"""
 
 deploy:
   extends: .base
@@ -49,4 +49,4 @@ deploy:
   script:
     - gl-helmfile --file $CI_PROJECT_DIR/helmfile.yaml apply
   rules:
-    - if: $CI_COMMIT_BRANCH == manage-local
+    - if: $CI_COMMIT_BRANCH == "manage-local"
