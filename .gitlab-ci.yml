@@ -39,7 +39,7 @@ sync:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
-    - if: $CI_COMMIT_BRANCH == "manage-local"""
+    - if: $CI_COMMIT_BRANCH == "manage-local"
 
 deploy:
   extends: .base
