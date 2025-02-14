@@ -1,11 +1,11 @@
 repositories:
-- name: gitlab
-  url: https://charts.gitlab.io
+- name: bitnami
+  url: https://bitnami.com
 
 releases:
 - name: runner
   namespace: gitlab-managed-apps
-  chart: gitlab/gitlab-runner
+  chart: bitnami/mongodb
   version: 0.60.0
   installed: true
   values:
