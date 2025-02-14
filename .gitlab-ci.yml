@@ -2,7 +2,7 @@
 ## Replace <FULL_NAME_OF_CLUSTER_MANAGEMENT_PROJECT>:<NAME_YOU_GAVE_YOUR_AGENT>
 ## with the actual project and agent name.
 variables:
-  KUBE_CONTEXT: "scalyshop-cluster-management:scalyshop-agent"
+  KUBE_CONTEXT: "scalyshop-cluster-management:manage-local-agent"
 
 .base:
   image: "registry.gitlab.com/gitlab-org/cluster-integration/cluster-applications:v2.1.0"
@@ -26,7 +26,7 @@ diff:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == manage-local
 
 sync:
   extends: .base
@@ -39,7 +39,7 @@ sync:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Changed sync to automatic execution
+    - if: $CI_COMMIT_BRANCH == manage-local
 
 deploy:
   extends: .base
@@ -49,4 +49,4 @@ deploy:
   script:
     - gl-helmfile --file $CI_PROJECT_DIR/helmfile.yaml apply
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == manage-local
