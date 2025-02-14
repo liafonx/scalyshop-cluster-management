@@ -15,7 +15,8 @@ helmDefaults:
   # ------------------------------------------------------------
 
 helmfiles:
-  - path: applications/ingress/helmfile.yaml
+
+#  - path: applications/ingress/helmfile.yaml
 #  - path: applications/cert-manager/helmfile.yaml
 #  - path: applications/gitlab-runner/helmfile.yaml
 #  - path: applications/vault/helmfile.yaml
