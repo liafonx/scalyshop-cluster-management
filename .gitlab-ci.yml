@@ -25,7 +25,7 @@ diff:
     - gl-helmfile --file $CI_PROJECT_DIR/helmfile.yaml diff --suppress-secrets
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
+     # when: never
     #- if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 sync:
@@ -38,7 +38,7 @@ sync:
     - gl-helmfile --file $CI_PROJECT_DIR/helmfile.yaml sync
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
+     # when: never
    # - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Changed sync to automatic execution
 
 deploy:
