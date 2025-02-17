@@ -1,0 +1,25 @@
+replicaSet:
+  enabled: true  
+  name: rs0  
+
+auth:
+  enabled: true  
+  rootPassword: "123456"  
+  username: "user" 
+  password: "123456"  
+  database: "mongonDB"  
+
+service:
+  type: ClusterIP  
+
+persistence:
+  enabled: true  
+  size: 8Gi  
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "2Gi"
+    cpu: "1000m"
