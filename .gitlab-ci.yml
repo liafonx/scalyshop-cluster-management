@@ -1,13 +1,10 @@
-## Set the CI/CD variable $KUBE_CONTEXT through the GitLab UI or define it here.
-## Replace <FULL_NAME_OF_CLUSTER_MANAGEMENT_PROJECT>:<NAME_YOU_GAVE_YOUR_AGENT>
-## with the actual project and agent name.
 variables:
-  KUBE_CONTEXT: "scalyshop-cluster-management:scalyshop-agent"
+  KUBE_CONTEXT: "courses/dat490/students/2025/dat490-2025-9/scalyshop-cluster-management:scalyshop-cluster"
 
 .base:
   image: "registry.gitlab.com/gitlab-org/cluster-integration/cluster-applications:v2.1.0"
   before_script:
-    - chmod 400 "$KUBECONFIG"   # Workaround for permission issues
+    - chmod 400 "$KUBECONFIG"
     - gl-use-kube-context
 
 stages:
@@ -39,7 +36,7 @@ sync:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Changed sync to automatic execution
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 deploy:
   extends: .base
