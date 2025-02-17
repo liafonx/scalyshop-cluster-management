@@ -5,6 +5,7 @@
 auth:
   enabled: true 
   username: scaly
+  rootPassword: null
   password: scalypw
   database: scalyDB
 
