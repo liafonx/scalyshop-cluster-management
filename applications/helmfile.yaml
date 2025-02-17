@@ -6,7 +6,7 @@ releases:
   - name: mongodb-new
     namespace:scalyshop  # 指定适当的命名空间
     chart: bitnami/mongodb  # 指定 MongoDB 的 Helm Chart
-    version: "10.28.0"  # Helm Chart 的版本
+    version: "16.4.0"  # Helm Chart 的版本
     values:
       - values.yaml  # 引用你配置的 values.yaml 文件
     installed: true
