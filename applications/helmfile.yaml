@@ -3,10 +3,10 @@ repositories:
   url: https://charts.bitnami.com/bitnami
 
 releases:
-  - name: mongodb-new
-    namespace:scalyshop  # 指定适当的命名空间
-    chart: bitnami/mongodb  # 指定 MongoDB 的 Helm Chart
-    version: "16.4.0"  # Helm Chart 的版本
+  - name: mongodb
+    namespace: gitlab-managed-apps
+    chart: bitnami/mongodb  
+    version: 16.4.0
     values:
-      - values.yaml  # 引用你配置的 values.yaml 文件
+      - values.yaml 
     installed: true
