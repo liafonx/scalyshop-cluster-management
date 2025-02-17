@@ -1,24 +1,12 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: mongodb
-  namespace: scalyshop
-spec:
-  releaseName: mongodb
-  chart:
-    spec:
-      chart: bitnami/mongodb
-      version: 10.13.3
-      sourceRef:
-        kind: HelmRepository
-        name: bitnami
-        namespace: flux-system
-  values:
-    auth:
-      enabled: true
-      rootPassword: 123admin
-     # username: youruser  # 可选配置 MongoDB 用户名
-     # password: youruserpassword  # 可选配置 MongoDB 用户密码
-    persistence:
-      enabled: true
-      size: 8Gi
+repositories:
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
+
+releases:
+  - name: mongodb
+    namespace:scalyshop  # 指定适当的命名空间
+    chart: bitnami/mongodb  # 指定 MongoDB 的 Helm Chart
+    version: "10.28.0"  # Helm Chart 的版本
+    values:
+      - values.yaml  # 引用你配置的 values.yaml 文件
+    installed: true
