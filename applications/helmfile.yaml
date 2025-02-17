@@ -3,7 +3,7 @@ repositories:
   url: https://charts.bitnami.com/bitnami
 
 releases:
-  - name: mongodb
+  - name: mongodb-new
     namespace:scalyshop  # 指定适当的命名空间
     chart: bitnami/mongodb  # 指定 MongoDB 的 Helm Chart
     version: "10.28.0"  # Helm Chart 的版本
