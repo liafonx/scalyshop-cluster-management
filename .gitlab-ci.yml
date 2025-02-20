@@ -1,5 +1,5 @@
 variables:
-  KUBE_CONTEXT: "courses/dat490/students/2025/dat490-2025-9/scalyshop-cluster-management:scalyshop-cluster"
+  KUBE_CONTEXT: "courses/dat490/students/2025/dat490-2025-9/scalyshop-cluster-management:management-agent"
 
 .base:
   image: "registry.gitlab.com/gitlab-org/cluster-integration/cluster-applications:v2.1.0"
@@ -14,6 +14,8 @@ stages:
 
 diff:
   extends: .base
+  tags:
+    - test
   stage: diff
   environment:
     name: production
@@ -28,6 +30,8 @@ diff:
 sync:
   extends: .base
   stage: sync
+  tags:
+    - test
   environment:
     name: production
   script:
@@ -41,9 +45,11 @@ sync:
 deploy:
   extends: .base
   stage: deploy
+  tags:
+    - test
   environment:
     name: production
   script:
     - gl-helmfile --file $CI_PROJECT_DIR/helmfile.yaml apply
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH ==  $CI_DEFAULT_BRANCH

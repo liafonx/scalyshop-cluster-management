@@ -1,0 +1,12 @@
+#replicaSet:
+#  enabled: true
+#  name: rs0
+
+auth:
+  enabled: true
+  username: scaly
+  rootPassword: $MONGODB_ROOT_PASSWORD'
+  password: scalypw
+  database: scalyDB
+
+
