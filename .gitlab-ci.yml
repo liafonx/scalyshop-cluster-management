@@ -28,7 +28,7 @@ diff:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 sync:
   extends: .base
@@ -43,7 +43,7 @@ sync:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
-    - if: $CI_COMMIT_BRANCH ==  "master"  # Changed sync to automatic execution
+    - if: $CI_COMMIT_BRANCH ==  $CI_DEFAULT_BRANCH  # Changed sync to automatic execution
 
 deploy:
   extends: .base
@@ -55,4 +55,4 @@ deploy:
   script:
     - gl-helmfile --file $CI_PROJECT_DIR/helmfile.yaml apply
   rules:
-    - if: $CI_COMMIT_BRANCH ==  "master"
+    - if: $CI_COMMIT_BRANCH ==  $CI_DEFAULT_BRANCH
