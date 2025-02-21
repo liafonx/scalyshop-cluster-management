@@ -1,0 +1,17 @@
+global:
+  security:
+    ## @param global.security.allowInsecureImages Allows skipping image verification
+    allowInsecureImages: true
+
+image:
+  registry: docker.io
+  repository: dlavrenuek/bitnami-mongodb-arm
+  tag: "8.0.4"
+  digest: ""
+
+auth:
+  enabled: true
+  rootPassword: $MONGODB_ROOT_PASSWORD
+  username: scaly
+  password: scalypw
+  database: scalyDB
