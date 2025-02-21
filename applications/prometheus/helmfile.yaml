@@ -8,5 +8,5 @@ releases:
   chart: grafana/grafana
   version: 8.10.0
   installed: true
-  values:
-    - values.yaml
+#  values:
+#    - values.yaml
