@@ -1,0 +1,12 @@
+repositories:
+  - name: prometheus-community
+    url: https://artifacthub.io/packages/helm/prometheus-community/prometheus
+
+releases:
+- name: prometheus
+  namespace: gitlab-managed-apps
+  chart: prometheus-community/prometheus
+  version: 27.3.1
+  installed: true
+  values:
+    - values.yaml

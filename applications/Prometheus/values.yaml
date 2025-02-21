@@ -1,0 +1,17 @@
+storage:
+  persistentVolume:
+    enabled: true
+    size: 10Gi
+    storageClass: "standard"
+
+resources:
+  requests:
+    cpu: 1
+    memory: 2Gi
+  limits:
+    cpu: 2
+    memory: 4Gi
+
+server:
+  service:
+    type: LoadBalancer
