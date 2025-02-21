@@ -11,6 +11,7 @@ image:
 
 auth:
   enabled: true
+  rootPassword: $MONGODB_ROOT_PASSWORD
   username: scaly
   password: scalypw
   database: scalyDB
