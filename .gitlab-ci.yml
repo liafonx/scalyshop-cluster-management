@@ -8,7 +8,7 @@ variables:
   image: "registry.gitlab.com/gitlab-org/cluster-integration/cluster-applications:v2.1.0"
   before_script:
     - chmod 400 "$KUBECONFIG"   # Workaround for permission issues
-#    - kubectl config get-contexts
+    - kubectl config get-contexts
     - gl-use-kube-context
 
 stages:
