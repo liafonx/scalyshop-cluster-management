@@ -15,3 +15,14 @@ resources:
 server:
   service:
     type: LoadBalancer
+  extraScrapeConfigs: |
+  - job_name: 'kubernetes-services'
+    kubernetes_sd_configs:
+      - role: service
+        namespaces:
+          names:
+            - scalyshop
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
