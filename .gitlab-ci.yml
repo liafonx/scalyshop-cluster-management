@@ -1,5 +1,5 @@
 variables:
-  KUBE_CONTEXT: "courses/dat490/students/2025/dat490-2025-9/scalyshop-cluster-management:management-agent"
+  KUBE_CONTEXT: "courses/dat490/students/2025/dat490-2025-9/scalyshop-cluster-management:cluster-agent-manage"
 
 .base:
   image: "registry.gitlab.com/gitlab-org/cluster-integration/cluster-applications:v2.1.0"
