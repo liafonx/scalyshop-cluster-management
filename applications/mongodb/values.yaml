@@ -14,4 +14,7 @@ auth:
   rootPassword: $MONGODB_ROOT_PASSWORD
   username: scaly
   password: scalypw
-  database: scalyDB
+  databases: [
+      scalyDB,
+      scalyOrderDB
+    ]
