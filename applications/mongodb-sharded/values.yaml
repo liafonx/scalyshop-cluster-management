@@ -1,0 +1,13 @@
+shards: 2
+
+shardsvr:
+  dataNode:
+    replicaCount: 2
+
+auth:
+  enabled: true
+  rootUser: scaly
+  rootPassword: scalyDB
+
+metrics:
+  enabled: true
