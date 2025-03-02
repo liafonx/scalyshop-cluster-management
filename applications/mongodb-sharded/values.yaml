@@ -17,16 +17,16 @@ shardsvr:
 
 auth:
   enabled: true
-  rootPassword: $MONGODB_ROOT_PASSWORD
+#  rootPassword: $MONGODB_ROOT_PASSWORD
   replicaSetKey: 14A878CA-7810-4BDB-ADB0-90685CD105C7
 
-env:
-  - name: MONGODB_DATABASE
-    value: scalyDB
-  - name: MONGODB_USERNAME
-    value: scaly
-  - name: MONGODB_PASSWORD
-    value: scalypw
+#env:
+#  - name: MONGODB_DATABASE
+#    value: scalyDB
+#  - name: MONGODB_USERNAME
+#    value: scaly
+#  - name: MONGODB_PASSWORD
+#    value: scalypw
 #
 #metrics:
 #  enabled: true
