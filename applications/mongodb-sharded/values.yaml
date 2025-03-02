@@ -9,18 +9,18 @@ auth:
   rootPassword: $MONGODB_ROOT_PASSWORD
   replicaSetKey: $MONGODB_REPLICA_SET_KEY
 
-mongos:
-  extraVolumes:
-    - name: init-scripts
-#      configMap:
-#        name: mongodb-init-scripts
-      hostPath:
-        path: ./mongodb-init-scripts  # adjust to the absolute path on your node
-        type: Directory
-  extraVolumeMounts:
-    - name: init-scripts
-      mountPath: /docker-entrypoint-initdb.d
-      readOnly: true
+#mongos:
+#  extraVolumes:
+#    - name: init-scripts
+##      configMap:
+##        name: mongodb-init-scripts
+#      hostPath:
+#        path: ./mongodb-init-scripts  # adjust to the absolute path on your node
+#        type: Directory
+#  extraVolumeMounts:
+#    - name: init-scripts
+#      mountPath: /docker-entrypoint-initdb.d
+#      readOnly: true
 
 metrics:
   enabled: true
