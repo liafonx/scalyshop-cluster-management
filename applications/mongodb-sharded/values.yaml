@@ -1,3 +1,14 @@
+global:
+  security:
+    ## @param global.security.allowInsecureImages Allows skipping image verification
+    allowInsecureImages: true
+
+image:
+  registry: docker.io
+  repository: liafonx/mongodb-sharded-arm
+  tag: "8.0.5"
+  digest: ""
+
 shards: 2
 
 shardsvr:
