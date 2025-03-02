@@ -1,3 +1,6 @@
+image:
+  debug: true
+
 shards: 2
 
 shardsvr:
@@ -17,7 +20,6 @@ mongos:
   extraVolumeMounts:
     - name: init-scripts
       mountPath: /docker-entrypoint-initdb.d
-      readOnly: true
 
 #metrics:
 #  enabled: true
