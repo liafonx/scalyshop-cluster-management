@@ -8,14 +8,17 @@ auth:
   enabled: true
   rootPassword: $MONGODB_ROOT_PASSWORD
   replicaSetKey: $MONGODB_REPLICA_SET_KEY
-  #"14A878CA-7810-4BDB-ADB0-90685CD105C7"
 
-##common:
-##  initScriptsCM: mongodb-init-scripts
-#
-#mongos:
-#  config: "./mongo-init-script.js"
-#
-#metrics:
-#  enabled: true
+mongos:
+  extraVolumes:
+    - name: init-scripts
+      configMap:
+        name: mongodb-init-scripts
+  extraVolumeMounts:
+    - name: init-scripts
+      mountPath: /docker-entrypoint-initdb.d
+      readOnly: true
+
+metrics:
+  enabled: true
 
