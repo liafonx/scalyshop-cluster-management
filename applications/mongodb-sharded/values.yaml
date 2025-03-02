@@ -20,13 +20,13 @@ auth:
   rootPassword: $MONGODB_ROOT_PASSWORD
   replicaSetKey: $MONGODB_REPLICA_SET_KEY
 
-extraEnvVars:
+env:
   - name: MONGODB_DATABASE
     value: scalyDB
   - name: MONGODB_USERNAME
     value: scaly
   - name: MONGODB_PASSWORD
     value: scalypw
-
-metrics:
-  enabled: true
+#
+#metrics:
+#  enabled: true
