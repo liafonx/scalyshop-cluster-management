@@ -1,6 +1,6 @@
 repositories:
-- name: bitnami
-  url: https://charts.bitnami.com/bitnami
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
 
 releases:
   - name: mongodb-sharded
@@ -10,3 +10,13 @@ releases:
     installed: true
     values:
       - values.yaml
+
+resources:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: mongodb-init-scripts
+      namespace: gitlab-managed-apps
+    data:
+      init-sharding.js: |-
+        {{ .Files.Get "init-sharding.js" | indent 4 }}
