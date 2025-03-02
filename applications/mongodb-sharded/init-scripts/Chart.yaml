@@ -1,0 +1,4 @@
+apiVersion: v2
+name: init-scripts
+description: A minimal chart to deploy MongoDB init scripts as a ConfigMap
+version: 0.1.0

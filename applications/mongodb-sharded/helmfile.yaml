@@ -3,6 +3,11 @@ repositories:
     url: https://charts.bitnami.com/bitnami
 
 releases:
+  - name: init-scripts
+    namespace: gitlab-managed-apps
+    chart: ./init-scripts
+    installed: true
+
   - name: mongodb-sharded
     namespace: gitlab-managed-apps
     chart: bitnami/mongodb-sharded
@@ -10,31 +15,3 @@ releases:
     installed: true
     values:
       - values.yaml
-
-resources:
-  - apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: mongodb-init-scripts
-      namespace: gitlab-managed-apps
-    data:
-      init-sharding.js: |-
-        db = db.getSiblingDB('scalyDB');
-
-        db.createUser({
-            user: "scaly",
-            pwd: "scalypw",
-            roles: [
-                { role: "readWrite", db: "scalyDB" }
-            ]
-        });
-
-        db.createCollection('favorites');
-        db.createCollection('orders');
-        db.createCollection('products');
-
-        sh.enableSharding("scalyDB");
-
-        sh.shardCollection("scalyDB.favorites", {"productId": "hashed"});
-        sh.shardCollection("scalyDB.orders", {orderRef: "hashed"});
-        sh.shardCollection("scalyDB.products", {name: "hashed"});
