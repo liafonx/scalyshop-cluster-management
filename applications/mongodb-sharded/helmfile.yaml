@@ -18,5 +18,5 @@ resources:
       name: mongodb-init-scripts
       namespace: gitlab-managed-apps
     data:
-      init-sharding.js: |-
-        {{ .Files.Get "init-sharding.js" | indent 4 }}
+      init-sharding.js: |
+        {{ readFile "init-sharding.js" | indent 4 }}
