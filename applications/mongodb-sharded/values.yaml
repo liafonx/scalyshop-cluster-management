@@ -22,6 +22,6 @@ auth:
 #      mountPath: /docker-entrypoint-initdb.d
 #      readOnly: true
 
-metrics:
-  enabled: true
+#metrics:
+#  enabled: true
 
