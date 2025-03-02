@@ -19,4 +19,4 @@ resources:
       namespace: gitlab-managed-apps
     data:
       init-sharding.js: |
-        {{ readFile "init-sharding.js" | indent 4 }}
+{{ readFile "init-sharding.js" | indent 4 }}
