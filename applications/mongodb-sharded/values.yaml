@@ -7,7 +7,7 @@ shardsvr:
 auth:
   enabled: true
   rootPassword: $MONGODB_ROOT_PASSWORD
-#  replicaSetKey: $MONGODB_REPLICA_SET_KEY
+  replicaSetKey: $MONGODB_REPLICA_SET_KEY
 
 #mongos:
 #  extraVolumes:
