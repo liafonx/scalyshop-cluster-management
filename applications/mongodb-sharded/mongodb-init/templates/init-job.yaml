@@ -3,8 +3,6 @@ kind: Job
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
-#  labels:
-#    app.kubernetes.io/name: mongodb-sharded
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded
