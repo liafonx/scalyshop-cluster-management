@@ -22,7 +22,7 @@ mongos:
       mountPath: /entrypoint
   command:
     - /bin/bash
-    - mongosh --host mongos /entrypoint/init-sharding.js
+#    - mongosh --host mongos /entrypoint/init-sharding.js
 
 #metrics:
 #  enabled: true
