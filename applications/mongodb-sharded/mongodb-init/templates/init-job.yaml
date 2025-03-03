@@ -27,14 +27,12 @@ spec:
             done
             echo "Mongos is up."
 
-            echo "Waiting for non-draining shard..."
-            until mongosh --host mongodb-sharded --quiet --eval "var shards = db.adminCommand({ listShards: 1 }).shards;
-              var ready = shards.some(s => !s.draining);
-              if (!ready) { quit(1); }" > /dev/null 2>&1; do
-              echo "No non-draining shard found, sleeping..."
-              sleep 5
+            echo "Waiting for all shards to be ready..."
+            until mongosh --host mongodb-sharded --quiet --eval "var result = db.adminCommand({ listShards: 1 }); var expected = {{ .Values.shards }}; if(result.ok && result.shards && result.shards.length === expected && result.shards.every(s => s.draining !== true)) { quit(0); } else { quit(1); }" > /dev/null 2>&1; do
+              echo "Not all shards ready, sleeping..."
+              sleep 10
             done
-            echo "Found at least one non-draining shard. Running initialization commands..."
+            echo "All shards are ready. Running initialization commands..."
 
             mongosh admin --host mongodb-sharded \
               --username root \
