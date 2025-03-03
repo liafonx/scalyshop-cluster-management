@@ -6,10 +6,10 @@ shards: 2
 shardsvr:
   dataNode:
     replicaCount: 2
-#
+
 auth:
   enabled: true
-  rootPassword: 2F868AED-00BA-4ACE
-  replicaSetKey: 41C24039-5A1E-46A8
+  rootPassword: $MONGODB_ROOT_PASSWORD
+  replicaSetKey: $MONGODB_REPLICA_SET_KEY
 
 
