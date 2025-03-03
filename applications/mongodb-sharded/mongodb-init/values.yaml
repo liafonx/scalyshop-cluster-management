@@ -1,3 +1,9 @@
+image:
+  registry: docker.io
+  repository: liafonx/mongodb-sharded-arm
+  tag: "8.0.5"
+  digest: ""
+
 mongoShards: 2
 
 rootPassword: 3jcD77Y3mA
