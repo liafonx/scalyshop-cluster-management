@@ -21,7 +21,11 @@ spec:
           - -c
           - |
             echo "Waiting for mongos to be ready..."
-            until mongosh --host mongodb-sharded --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
+            until mongosh admin --host mongodb-sharded --quiet \
+              --username root \
+              --password "{{ .Values.rootPassword }}" \
+              --authenticationDatabase admin \
+              --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
               echo "Mongos not ready, sleeping..."
               sleep 10
             done
@@ -29,7 +33,7 @@ spec:
 
             echo "Waiting for all shards to be ready..."
             until mongosh admin --host mongodb-sharded --quiet \
-              --username "{{ .Values.rootUser }}" \
+              --username root \
               --password "{{ .Values.rootPassword }}" \
               --authenticationDatabase admin \
               --eval "var result = db.adminCommand({ listShards: 1 }); var expected = {{ .Values.mongoShards }}; if(result.ok && result.shards && result.shards.length === expected && result.shards.every(s => s.state === 1)) { quit(0); } else { quit(1); }" > /dev/null 2>&1; do
@@ -39,18 +43,26 @@ spec:
             echo "All shards are ready. Running initialization commands..."
 
             mongosh admin --host mongodb-sharded \
-              --username "{{ .Values.rootUser }}" \
+              --username root \
               --password "{{ .Values.rootPassword }}" \
               --authenticationDatabase admin \
               --eval "
                 db = db.getSiblingDB('scalyDB');
-
+                if (!db.getUser('scaly')) {
+                  db.createUser({
+                    user: 'scaly',
+                    pwd: 'scalypw',
+                    roles: [
+                      { role: 'readWrite', db: 'scalyDB' }
+                    ]
+                  });
+                } else {
+                  print('User scaly already exists, skipping creation.');
+                }
                 db.createCollection('favorites');
                 db.createCollection('orders');
                 db.createCollection('products');
-
                 sh.enableSharding('scalyDB');
-
                 sh.shardCollection('scalyDB.favorites', { productId: 'hashed' });
                 sh.shardCollection('scalyDB.orders', { orderRef: 'hashed' });
                 sh.shardCollection('scalyDB.products', { name: 'hashed' });
