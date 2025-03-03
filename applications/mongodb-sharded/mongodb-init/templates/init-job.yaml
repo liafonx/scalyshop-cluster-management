@@ -66,6 +66,6 @@ spec:
                 sh.shardCollection('scalyDB.favorites', { productId: 'hashed' });
                 sh.shardCollection('scalyDB.orders', { orderRef: 'hashed' });
                 sh.shardCollection('scalyDB.products', { name: 'hashed' });
-                echo "initialization is finished. exiting..."
               "
+            echo "Initialization is finished. exiting..."
       restartPolicy: OnFailure
