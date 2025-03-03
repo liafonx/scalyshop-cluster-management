@@ -12,18 +12,4 @@ auth:
   rootPassword: $MONGODB_ROOT_PASSWORD
   replicaSetKey: $MONGODB_REPLICA_SET_KEY
 
-mongos:
-  extraVolumes:
-    - name: init-scripts
-      configMap:
-        name: mongodb-init-scripts
-  extraVolumeMounts:
-    - name: init-scripts
-      mountPath: /entrypoint
-  command:
-    - /bin/bash
-#    - mongosh --host mongos /entrypoint/init-sharding.js
-
-#metrics:
-#  enabled: true
 

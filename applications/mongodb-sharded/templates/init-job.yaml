@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "mongodb-sharded.fullname" . }}-init"
+  labels:
+    app.kubernetes.io/name: {{ include "mongodb-sharded.name" . }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ include "mongodb-sharded.fullname" . }}-init"
+    spec:
+      containers:
+      - name: mongodb-init
+        # Use the same image as your MongoDB deployment (adjust if needed)
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
+        command:
+          - /bin/bash
+          - -c
+          - |
+            echo "Waiting for mongos to be ready..."
+            until nc -z {{ include "mongodb-sharded.fullname" . }}-mongos 27017; do
+              echo "Mongos not ready, sleeping..."
+              sleep 5
+            done
+            echo "Mongos is up. Running initialization commands..."
+            mongosh admin --host {{ include "mongodb-sharded.fullname" . }} \
+              --u root --p "{{ .Values.auth.rootPassword }}" \
+              --authenticationDatabase admin \
+              --eval '
+                db = db.getSiblingDB('scalyDB');
+
+                db.createUser({
+                    user: "scaly",
+                    pwd: "scalypw",
+                    roles: [
+                        { role: "readWrite", db: "scalyDB" }
+                    ]
+                });
+
+                db.createCollection('favorites');
+                db.createCollection('orders');
+                db.createCollection('products');
+
+                sh.enableSharding("scalyDB");
+
+                sh.shardCollection("scalyDB.favorites", {"productId": "hashed"});
+                sh.shardCollection("scalyDB.orders", {orderRef: "hashed"});
+                sh.shardCollection("scalyDB.products", {name: "hashed"});`
+              '
+      restartPolicy: OnFailure
