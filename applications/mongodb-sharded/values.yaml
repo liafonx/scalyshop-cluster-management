@@ -9,7 +9,8 @@ shardsvr:
 
 auth:
   enabled: true
-#  rootPassword: "06088821-BC8F-403B"
-#  replicaSetKey: "41C24039-5A1E-46A8"
+  rootPassword: 3jcD77Y3mA
+#  replicaSetKey: $MONGODB_REPLICA_SET_KEY
+# export MONGODB_REPLICA_SET_KEY=$(kubectl get secret --namespace "gitlab-managed-apps" mongodb-sharded -o jsonpath="{.data.mongodb-root-password}" | base64 -d)
 
 
