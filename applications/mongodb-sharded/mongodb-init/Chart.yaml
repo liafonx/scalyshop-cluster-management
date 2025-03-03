@@ -1,0 +1,4 @@
+apiVersion: v2
+name: mongodb-init
+description: A chart to run the MongoDB initialization job
+version: 0.1.0

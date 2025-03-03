@@ -1,33 +1,35 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ include "mongodb-sharded.fullname" . }}-init"
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ include "mongodb-sharded.name" . }}
+    app.kubernetes.io/name: mongodb-sharded
+  namespace:
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
     metadata:
-      name: "{{ include "mongodb-sharded.fullname" . }}-init"
+      name: {{ .Release.Name }}
     spec:
       containers:
       - name: mongodb-init
         # Use the same image as your MongoDB deployment (adjust if needed)
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
+        image: "docker.io/bitnami/mongodb-sharded:8.0.5-debian-12-r0"
         command:
           - /bin/bash
           - -c
           - |
             echo "Waiting for mongos to be ready..."
-            until nc -z {{ include "mongodb-sharded.fullname" . }}-mongos 27017; do
+            until nc -z mongodb-sharded 27017; do
               echo "Mongos not ready, sleeping..."
               sleep 5
             done
             echo "Mongos is up. Running initialization commands..."
-            mongosh admin --host {{ include "mongodb-sharded.fullname" . }} \
-              --u root --p "{{ .Values.auth.rootPassword }}" \
+            mongosh admin --host mongodb-sharded \
+              --u root --p "{{ .Values.rootPassword }}" \
               --authenticationDatabase admin \
               --eval '
                 db = db.getSiblingDB('scalyDB');
