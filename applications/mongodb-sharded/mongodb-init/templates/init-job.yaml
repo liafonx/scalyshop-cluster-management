@@ -28,7 +28,7 @@ spec:
             echo "Mongos is up."
 
             echo "Waiting for all shards to be ready..."
-            until mongosh --host mongodb-sharded --quiet --eval "var result = db.adminCommand({ listShards: 1 }); var expected = {{ .Values.mongo-shards }}; if(result.ok && result.shards && result.shards.length === expected && result.shards.every(s => s.state === 1)) { quit(0); } else { quit(1); }" > /dev/null 2>&1; do
+            until mongosh --host mongodb-sharded --quiet --eval "var result = db.adminCommand({ listShards: 1 }); var expected = {{ .Values.mongoShards }}; if(result.ok && result.shards && result.shards.length === expected && result.shards.every(s => s.state === 1)) { quit(0); } else { quit(1); }" > /dev/null 2>&1; do
               echo "Not all shards ready, sleeping..."
               sleep 10
             done
