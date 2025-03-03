@@ -11,7 +11,7 @@ releases:
     values:
       - values.yaml
 
-  - name: mongodb-init
-    namespace: gitlab-managed-apps
-    chart: ./mongodb-init
-    installed: true
+#  - name: mongodb-init
+#    namespace: gitlab-managed-apps
+#    chart: ./mongodb-init
+#    installed: true
