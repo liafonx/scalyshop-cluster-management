@@ -9,7 +9,7 @@ shardsvr:
 #
 auth:
   enabled: true
-  rootPassword: $MONGODB_ROOT_PASSWORD
+  rootPassword: "2F868AED-00BA-4ACE-8A60-5983846C96C6"
   replicaSetKey: $MONGODB_REPLICA_SET_KEY
 
 
