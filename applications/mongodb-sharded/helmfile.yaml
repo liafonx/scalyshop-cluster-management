@@ -6,7 +6,7 @@ releases:
   - name: mongodb-sharded
     namespace: gitlab-managed-apps
     chart: bitnami/mongodb-sharded
-    version: 9.1.2
+    version: 9.0.0
     installed: true
     values:
       - values.yaml
