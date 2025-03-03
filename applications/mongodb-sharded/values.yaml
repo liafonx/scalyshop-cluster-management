@@ -13,6 +13,6 @@ metrics:
   enabled: true
 
 # export MONGODB_REPLICA_SET_KEY=$(kubectl get secret --namespace "gitlab-managed-apps" mongodb-sharded -o jsonpath="{.data.mongodb-root-password}" | base64 -d)
-# export MONGODB_REPLICA_SET_KEY=$(kubectl get secret --namespace "gitlab-managed-apps" mongodb-sharded -o jsonpath="{.data.mongodb-replica-set-key}" | base64 -d)
+# export MONGODB_ROOT_PASSWORD=$(kubectl get secret --namespace "gitlab-managed-apps" mongodb-sharded -o jsonpath="{.data.mongodb-root-password}" | base64 -d)
 
 
