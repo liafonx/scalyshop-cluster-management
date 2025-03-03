@@ -29,7 +29,7 @@ spec:
 
             echo "Waiting for all shards to be ready..."
             until mongosh admin --host mongodb-sharded --quiet \
-              --username root \
+              --username "{{ .Values.rootUser }}" \
               --password "{{ .Values.rootPassword }}" \
               --authenticationDatabase admin \
               --eval "var result = db.adminCommand({ listShards: 1 }); var expected = {{ .Values.mongoShards }}; if(result.ok && result.shards && result.shards.length === expected && result.shards.every(s => s.state === 1)) { quit(0); } else { quit(1); }" > /dev/null 2>&1; do
@@ -39,7 +39,7 @@ spec:
             echo "All shards are ready. Running initialization commands..."
 
             mongosh admin --host mongodb-sharded \
-              --username "{{ .Values.rootPassword }}" \
+              --username "{{ .Values.rootUser }}" \
               --password "{{ .Values.rootPassword }}" \
               --authenticationDatabase admin \
               --eval "
