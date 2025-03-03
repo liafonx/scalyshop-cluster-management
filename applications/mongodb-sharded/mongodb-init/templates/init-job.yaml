@@ -5,7 +5,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: mongodb-sharded
-  namespace:
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -15,41 +14,41 @@ spec:
       name: {{ .Release.Name }}
     spec:
       containers:
-      - name: mongodb-init
-        # Use the same image as your MongoDB deployment (adjust if needed)
+      - name: {{ .Release.Name }}
         image: "docker.io/bitnami/mongodb-sharded:8.0.5-debian-12-r0"
         command:
           - /bin/bash
           - -c
           - |
             echo "Waiting for mongos to be ready..."
-            until nc -z mongodb-sharded 27017; do
+            until mongosh --host mongodb-sharded --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
               echo "Mongos not ready, sleeping..."
               sleep 5
             done
             echo "Mongos is up. Running initialization commands..."
             mongosh admin --host mongodb-sharded \
-              --u root --p "{{ .Values.rootPassword }}" \
+              --username root \
+              --password "{{ .Values.rootPassword }}" \
               --authenticationDatabase admin \
-              --eval '
+              --eval "
                 db = db.getSiblingDB('scalyDB');
 
                 db.createUser({
-                    user: "scaly",
-                    pwd: "scalypw",
-                    roles: [
-                        { role: "readWrite", db: "scalyDB" }
-                    ]
+                  user: 'scaly',
+                  pwd: 'scalypw',
+                  roles: [
+                    { role: 'readWrite', db: 'scalyDB' }
+                  ]
                 });
 
                 db.createCollection('favorites');
                 db.createCollection('orders');
                 db.createCollection('products');
 
-                sh.enableSharding("scalyDB");
+                sh.enableSharding('scalyDB');
 
-                sh.shardCollection("scalyDB.favorites", {"productId": "hashed"});
-                sh.shardCollection("scalyDB.orders", {orderRef: "hashed"});
-                sh.shardCollection("scalyDB.products", {name: "hashed"});`
-              '
+                sh.shardCollection('scalyDB.favorites', { productId: 'hashed' });
+                sh.shardCollection('scalyDB.orders', { orderRef: 'hashed' });
+                sh.shardCollection('scalyDB.products', { name: 'hashed' });
+              "
       restartPolicy: OnFailure
