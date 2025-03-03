@@ -21,11 +21,8 @@ mongos:
     - name: init-scripts
       mountPath: /entrypoint
   command:
-    - /bin/sh
-    - while ! nc -z mongos 27017
-    - do echo 'Waiting for mongos...'
-    - done
-    - mongosh --host mongos /entrypoint/init-sharding.js
+    - /bin/bash
+    - /entrypoint/wait-for-it.sh 127.0.0.1:27017 -- mongosh --host mongos /entrypoint/init-sharding.js
 
 #metrics:
 #  enabled: true
