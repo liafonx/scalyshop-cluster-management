@@ -12,6 +12,7 @@ auth:
   rootUser: scaly
   rootPassword: scalypw
   replicaSetKey: ldAwsDj3R9
+  
 # export MONGODB_REPLICA_SET_KEY=$(kubectl get secret --namespace "gitlab-managed-apps" mongodb-sharded -o jsonpath="{.data.mongodb-root-password}" | base64 -d)
 # export MONGODB_REPLICA_SET_KEY=$(kubectl get secret --namespace "gitlab-managed-apps" mongodb-sharded -o jsonpath="{.data.mongodb-replica-set-key}" | base64 -d)
 
