@@ -22,7 +22,9 @@ mongos:
       mountPath: /entrypoint
   command:
     - /bin/sh
-    - sleep 10
+    - while ! nc -z mongos 27017
+    - do echo 'Waiting for mongos...'
+    - done
     - mongosh --host mongos /entrypoint/init-sharding.js
 
 #metrics:
