@@ -23,9 +23,19 @@ spec:
             echo "Waiting for mongos to be ready..."
             until mongosh --host mongodb-sharded --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
               echo "Mongos not ready, sleeping..."
+              sleep 10
+            done
+            echo "Mongos is up."
+
+            echo "Waiting for non-draining shard..."
+            until mongosh --host mongodb-sharded --quiet --eval "var shards = db.adminCommand({ listShards: 1 }).shards;
+              var ready = shards.some(s => !s.draining);
+              if (!ready) { quit(1); }" > /dev/null 2>&1; do
+              echo "No non-draining shard found, sleeping..."
               sleep 5
             done
-            echo "Mongos is up. Running initialization commands..."
+            echo "Found at least one non-draining shard. Running initialization commands..."
+
             mongosh admin --host mongodb-sharded \
               --username root \
               --password "{{ .Values.rootPassword }}" \
