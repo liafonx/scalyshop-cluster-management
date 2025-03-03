@@ -19,7 +19,11 @@ mongos:
         name: mongodb-init-scripts
   extraVolumeMounts:
     - name: init-scripts
-      mountPath: /docker-entrypoint-initdb.d
+      mountPath: /entrypoint
+  command:
+    - /bin/bash
+    - sleep 10
+    - mongosh --host mongos /entrypoint/init-sharding.js
 
 #metrics:
 #  enabled: true
