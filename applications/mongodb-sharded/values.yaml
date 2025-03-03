@@ -9,7 +9,7 @@ shardsvr:
 
 auth:
   enabled: true
-  rootPassword: "06088821-BC8F-403B"
-  replicaSetKey: "41C24039-5A1E-46A8"
+#  rootPassword: "06088821-BC8F-403B"
+#  replicaSetKey: "41C24039-5A1E-46A8"
 
 
