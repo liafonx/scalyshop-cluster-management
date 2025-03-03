@@ -21,7 +21,7 @@ mongos:
     - name: init-scripts
       mountPath: /entrypoint
   command:
-    - /bin/bash
+    - /bin/sh
     - sleep 10
     - mongosh --host mongos /entrypoint/init-sharding.js
 
