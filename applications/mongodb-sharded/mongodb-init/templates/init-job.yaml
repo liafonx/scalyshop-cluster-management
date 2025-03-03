@@ -39,19 +39,11 @@ spec:
             echo "All shards are ready. Running initialization commands..."
 
             mongosh admin --host mongodb-sharded \
-              --username root \
+              --username "{{ .Values.rootPassword }}" \
               --password "{{ .Values.rootPassword }}" \
               --authenticationDatabase admin \
               --eval "
                 db = db.getSiblingDB('scalyDB');
-
-                db.createUser({
-                  user: 'scaly',
-                  pwd: 'scalypw',
-                  roles: [
-                    { role: 'readWrite', db: 'scalyDB' }
-                  ]
-                });
 
                 db.createCollection('favorites');
                 db.createCollection('orders');
