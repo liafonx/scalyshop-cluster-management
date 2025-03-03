@@ -1,0 +1,71 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "mongodb-sharded.fullname" . }}-init
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "mongodb-sharded.name" . }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ include "mongodb-sharded.fullname" . }}-init
+    spec:
+      containers:
+      - name: {{ include "mongodb-sharded.fullname" . }}-init
+        image: "docker.io/bitnami/mongodb-sharded:8.0.5-debian-12-r0"
+        command:
+          - /bin/bash
+          - -c
+          - |
+            echo "Waiting for mongos to be ready..."
+            until mongosh admin --host mongodb-sharded --quiet \
+              --username root \
+              --password "{{ .Values.rootPassword }}" \
+              --authenticationDatabase admin \
+              --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
+              echo "Mongos not ready, sleeping..."
+              sleep 10
+            done
+            echo "Mongos is up."
+
+            echo "Waiting for all shards to be ready..."
+            until mongosh admin --host mongodb-sharded --quiet \
+              --username root \
+              --password "{{ .Values.rootPassword }}" \
+              --authenticationDatabase admin \
+              --eval "var result = db.adminCommand({ listShards: 1 }); var expected = {{ .Values.mongoShards }}; if(result.ok && result.shards && result.shards.length === expected && result.shards.every(s => s.state === 1)) { quit(0); } else { quit(1); }" > /dev/null 2>&1; do
+              echo "Not all shards ready, sleeping..."
+              sleep 10
+            done
+            echo "All shards are ready. Running initialization commands..."
+
+            mongosh admin --host mongodb-sharded \
+              --username root \
+              --password "{{ .Values.rootPassword }}" \
+              --authenticationDatabase admin \
+              --eval "
+                db = db.getSiblingDB('scalyDB');
+                if (!db.getUser('scaly')) {
+                  db.createUser({
+                    user: 'scaly',
+                    pwd: 'scalypw',
+                    roles: [
+                      { role: 'readWrite', db: 'scalyDB' }
+                    ]
+                  });
+                  print('User scaly created.');
+                } else {
+                  print('User scaly already exists, skipping creation.');
+                }
+                db.createCollection('favorites');
+                db.createCollection('orders');
+                db.createCollection('products');
+                sh.enableSharding('scalyDB');
+                sh.shardCollection('scalyDB.favorites', { productId: 'hashed' });
+                sh.shardCollection('scalyDB.orders', { orderRef: 'hashed' });
+                sh.shardCollection('scalyDB.products', { name: 'hashed' });
+              "
+      restartPolicy: OnFailure
