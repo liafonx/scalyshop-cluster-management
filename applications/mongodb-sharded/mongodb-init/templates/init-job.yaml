@@ -67,5 +67,7 @@ spec:
                 sh.shardCollection('scalyDB.favorites', { productId: 'hashed' });
                 sh.shardCollection('scalyDB.orders', { orderRef: 'hashed' });
                 sh.shardCollection('scalyDB.products', { name: 'hashed' });
+                db = db.getSiblingDB('scalyDB2');
+                db.createCollection('favorites');
               "
       restartPolicy: OnFailure
