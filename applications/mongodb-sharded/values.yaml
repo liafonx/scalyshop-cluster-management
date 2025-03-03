@@ -22,7 +22,7 @@ mongos:
       mountPath: /entrypoint
   command:
     - /bin/bash
-    - /entrypoint/wait-for-it.sh 127.0.0.1:27017 -- mongosh --host mongos /entrypoint/init-sharding.js
+    - mongosh --host mongos /entrypoint/init-sharding.js
 
 #metrics:
 #  enabled: true
