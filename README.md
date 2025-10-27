@@ -295,7 +295,7 @@ resources:
 
 ---
 
-## Skills Demonstrated
+<!-- ## Skills Demonstrated
 
 - **Infrastructure-as-Code**: Helmfile, declarative infrastructure
 - **GitOps**: Git-based infrastructure management
@@ -306,4 +306,4 @@ resources:
 - **Load Balancing**: NGINX Ingress configuration
 - **CI/CD**: GitHub Actions, automated deployments
 - **DevOps**: Infrastructure automation, configuration management
-- **Distributed Systems**: Sharding, replication, high availability
+- **Distributed Systems**: Sharding, replication, high availability -->
