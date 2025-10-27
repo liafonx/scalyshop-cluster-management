@@ -1,0 +1,163 @@
+name: Helmfile Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:  # Allow manual triggers
+
+env:
+  HELMFILE_VERSION: "0.157.0"
+  HELM_VERSION: "3.13.0"
+  KUBECTL_VERSION: "1.28.0"
+
+jobs:
+  diff:
+    name: Helmfile Diff
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v${{ env.KUBECTL_VERSION }}
+      
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v${{ env.HELM_VERSION }}
+      
+      - name: Install Helmfile
+        run: |
+          wget -q https://github.com/helmfile/helmfile/releases/download/v${{ env.HELMFILE_VERSION }}/helmfile_${{ env.HELMFILE_VERSION }}_linux_amd64.tar.gz
+          tar -xzf helmfile_${{ env.HELMFILE_VERSION }}_linux_amd64.tar.gz
+          sudo mv helmfile /usr/local/bin/helmfile
+          chmod +x /usr/local/bin/helmfile
+          helmfile --version
+      
+      - name: Install Helm Diff Plugin
+        run: |
+          helm plugin install https://github.com/databus23/helm-diff || true
+      
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+      
+      - name: Verify cluster connection
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
+      
+      - name: Helmfile Diff
+        run: |
+          helmfile --file ${{ github.workspace }}/helmfile.yaml diff --suppress-secrets
+        continue-on-error: true
+
+  sync:
+    name: Helmfile Sync
+    runs-on: ubuntu-latest
+    needs: diff
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+    environment:
+      name: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v${{ env.KUBECTL_VERSION }}
+      
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v${{ env.HELM_VERSION }}
+      
+      - name: Install Helmfile
+        run: |
+          wget -q https://github.com/helmfile/helmfile/releases/download/v${{ env.HELMFILE_VERSION }}/helmfile_${{ env.HELMFILE_VERSION }}_linux_amd64.tar.gz
+          tar -xzf helmfile_${{ env.HELMFILE_VERSION }}_linux_amd64.tar.gz
+          sudo mv helmfile /usr/local/bin/helmfile
+          chmod +x /usr/local/bin/helmfile
+          helmfile --version
+      
+      - name: Install Helm Diff Plugin
+        run: |
+          helm plugin install https://github.com/databus23/helm-diff || true
+      
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+      
+      - name: Ensure namespace exists
+        run: |
+          kubectl create namespace gitlab-managed-apps --dry-run=client -o yaml | kubectl apply -f -
+      
+      - name: Helmfile Sync
+        run: |
+          helmfile --file ${{ github.workspace }}/helmfile.yaml sync
+
+  deploy:
+    name: Helmfile Apply
+    runs-on: ubuntu-latest
+    needs: sync
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+    environment:
+      name: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v${{ env.KUBECTL_VERSION }}
+      
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v${{ env.HELM_VERSION }}
+      
+      - name: Install Helmfile
+        run: |
+          wget -q https://github.com/helmfile/helmfile/releases/download/v${{ env.HELMFILE_VERSION }}/helmfile_${{ env.HELMFILE_VERSION }}_linux_amd64.tar.gz
+          tar -xzf helmfile_${{ env.HELMFILE_VERSION }}_linux_amd64.tar.gz
+          sudo mv helmfile /usr/local/bin/helmfile
+          chmod +x /usr/local/bin/helmfile
+          helmfile --version
+      
+      - name: Install Helm Diff Plugin
+        run: |
+          helm plugin install https://github.com/databus23/helm-diff || true
+      
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+      
+      - name: Helmfile Apply
+        run: |
+          helmfile --file ${{ github.workspace }}/helmfile.yaml apply
+      
+      - name: Verify deployments
+        run: |
+          kubectl get all -n gitlab-managed-apps
+          kubectl get helmreleases -A || echo "No Helm releases CRD found"
+

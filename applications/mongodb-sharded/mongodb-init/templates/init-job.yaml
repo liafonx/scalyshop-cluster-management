@@ -65,5 +65,13 @@ spec:
                 sh.shardCollection('scalyDB.favorites', { productId: 'hashed' });
                 sh.shardCollection('scalyDB.orders', { orderRef: 'hashed' });
                 sh.shardCollection('scalyDB.products', { name: 'hashed' });
+                db.products.insertMany([
+                  { name: 'The Witcher 3: Wild Hunt', category: 'Action-adventure', price: 1500 },
+                  { name: 'God of War', category: 'Action-adventure', price: 1000 },
+                  { name: 'Red Dead Redemption', category: 'Western', price: 50 },
+                  { name: 'Uncharted 4: A Thief\'s End', category: 'Adventure', price: 1500 },
+                  { name: 'FIFA 21', category: 'Sports', price: 100 },
+                  { name: 'Civilization VI', category: 'Strategy', price: 259 }
+                ])
               "
       restartPolicy: OnFailure

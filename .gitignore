@@ -1,0 +1,17 @@
+.DS_Store
+*.backup
+
+# GitLab CI (no longer needed)
+.gitlab-ci.yml
+
+# Helm and Helmfile temporary files
+*.lock
+charts/
+.helmfile/
+
+# Kubernetes config (never commit this!)
+kubeconfig
+*.kubeconfig
+
+GITHUB_MIGRATION_GUIDE.md
+migrate-to-github.sh
