@@ -32,66 +32,24 @@ Manages complete Kubernetes cluster infrastructure using **Infrastructure-as-Cod
 ## Managed Components
 
 ### 1. NGINX Ingress Controller
-**Technology**: NGINX Ingress, LoadBalancer Service  
-**Purpose**: L7 load balancing, HTTP/HTTPS routing, SSL/TLS termination  
-**Location**: `applications/ingress/`
-
-```yaml
-Features:
-  - External LoadBalancer service
-  - Path and host-based routing
-  - SSL/TLS certificate integration
-  - Request/response modification
-```
+**Location**: `applications/ingress/`  
+L7 load balancing, HTTP/HTTPS routing, SSL/TLS termination
 
 ### 2. MongoDB Sharded Cluster
-**Technology**: MongoDB, StatefulSets, PersistentVolumes  
-**Purpose**: Distributed database with horizontal scalability  
-**Location**: `applications/mongodb-sharded/`
-
-```yaml
-Architecture:
-  Config Servers: 3 replicas (metadata storage)
-  Shards: 2+ replica sets (data partitions)
-  Mongos Routers: Query routing layer
-  
-Features:
-  - Automatic data distribution
-  - High availability with replica sets
-  - Horizontal scaling via sharding
-  - Persistent storage (PVCs)
-```
+**Location**: `applications/mongodb-sharded/`  
+Distributed database with horizontal scalability. Architecture includes config servers, shards, and mongos routers.
 
 ### 3. Prometheus
-**Technology**: Prometheus, Time-Series Database  
-**Purpose**: Metrics collection and monitoring  
-**Location**: `applications/prometheus/`
-
-```yaml
-Metrics Collected:
-  - Pod and container metrics
-  - Node metrics (kubelet)
-  - Application custom metrics
-  - HTTP request metrics
-```
+**Location**: `applications/prometheus/`  
+Metrics collection and monitoring for pods, nodes, and applications
 
 ### 4. Grafana
-**Technology**: Grafana, Visualization Platform  
-**Purpose**: Metrics dashboards and alerting  
-**Location**: `applications/grafana/`
-
-```yaml
-Dashboards:
-  - Kubernetes cluster overview
-  - Pod resource usage
-  - MongoDB performance
-  - Application metrics
-```
+**Location**: `applications/grafana/`  
+Metrics visualization and dashboards for Kubernetes and application metrics
 
 ### 5. Cert-Manager (Optional)
-**Technology**: Cert-Manager, Let's Encrypt  
-**Purpose**: Automated SSL/TLS certificate management  
-**Location**: `applications/cert-manager/`
+**Location**: `applications/cert-manager/`  
+Automated SSL/TLS certificate management with Let's Encrypt
 
 ---
 
